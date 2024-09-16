@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/app_pallete.dart';
 import 'package:soptify_mvvm_riverpod/core/widgets/custom_fields.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
+import 'package:soptify_mvvm_riverpod/features/auth/view/pages/signin_page.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/widgets/auth_gradient_button.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -72,20 +73,28 @@ class _SignUpPageState extends State<SignUpPage> {
                     print(val);
                   }),
               const SizedBox(height: 20),
-              RichText(
-                  text: TextSpan(
-                text: "Already have an account? ",
-                style: Theme.of(context).textTheme.titleMedium,
-                children: const [
-                  TextSpan(
-                    text: "Sign In",
-                    style: TextStyle(
-                      color: Pallete.gradient2,
-                      fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: () {
+                  // navigate to sign in page
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SingInPage();
+                  }));
+                },
+                child: RichText(
+                    text: TextSpan(
+                  text: "Already have an account? ",
+                  style: Theme.of(context).textTheme.titleMedium,
+                  children: const [
+                    TextSpan(
+                      text: "Sign In",
+                      style: TextStyle(
+                        color: Pallete.gradient2,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                )),
+              ),
             ],
           ),
         ),

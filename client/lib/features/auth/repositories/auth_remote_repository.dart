@@ -42,7 +42,7 @@ class AuthRemoteRepository {
     }
   }
 
-  /* Future<Either<AppFailure, UserModel>> login({
+  Future<Either<AppFailure, UserModel>> login({
     required String email,
     required String password,
   }) async {
@@ -68,12 +68,10 @@ class AuthRemoteRepository {
       }
 
       return Right(
-        UserModel.fromMap(resBodyMap['user']).copyWith(
-          token: resBodyMap['token'],
-        ),
+        UserModel.fromMap(resBodyMap),
       );
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }
-  } */
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/app_pallete.dart';
 import 'package:soptify_mvvm_riverpod/core/widgets/custom_fields.dart';
+import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/widgets/auth_gradient_button.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -49,9 +51,26 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 15),
               CustomField(hintText: "Email", controller: emailController),
               const SizedBox(height: 15),
-              CustomField(hintText: "Password", controller: passwordController, isObscureText: true,),
+              CustomField(
+                hintText: "Password",
+                controller: passwordController,
+                isObscureText: true,
+              ),
               const SizedBox(height: 20),
-              AuthGradientButton(buttonText: "Sign Up", onTap: () {}),
+              AuthGradientButton(
+                  buttonText: "Sign Up",
+                  onTap: () async {
+                    final res = await AuthRemoteRepository().signup(
+                        name: nameController.text,
+                        email: emailController.text,
+                        password: passwordController.text.trim());
+
+                    final val = switch (res) {
+                      Left(value: final l) => l,
+                      Right(value: final r) => r.toString(),
+                    };
+                    print(val);
+                  }),
               const SizedBox(height: 20),
               RichText(
                   text: TextSpan(

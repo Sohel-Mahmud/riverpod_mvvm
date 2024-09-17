@@ -2,10 +2,18 @@ import 'dart:convert';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:soptify_mvvm_riverpod/core/failure/failure.dart';
 
 import '../../../core/constants/server_constant.dart';
 import '../model/user_model.dart';
+
+part 'auth_remote_repository.g.dart';
+
+@riverpod
+AuthRemoteRepository authRemoteRepository(AuthRemoteRepositoryRef ref) {
+  return AuthRemoteRepository();
+}
 
 class AuthRemoteRepository {
   Future<Either<AppFailure, UserModel>> signup({
@@ -68,7 +76,36 @@ class AuthRemoteRepository {
       }
 
       return Right(
-        UserModel.fromMap(resBodyMap),
+        UserModel.fromMap(resBodyMap['user']).copyWith(
+          token: resBodyMap['token'],
+        ),
+      );
+    } catch (e) {
+      return Left(AppFailure(e.toString()));
+    }
+  }
+
+  Future<Either<AppFailure, UserModel>> getCurrentUserData(String token) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${ServerConstant.serverURL}/auth/',
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      );
+      final resBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode != 200) {
+        return Left(AppFailure(resBodyMap['detail']));
+      }
+
+      return Right(
+        UserModel.fromMap(resBodyMap).copyWith(
+          token: token,
+        ),
       );
     } catch (e) {
       return Left(AppFailure(e.toString()));

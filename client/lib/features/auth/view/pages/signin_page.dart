@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/app_pallete.dart';
 import 'package:soptify_mvvm_riverpod/core/widgets/custom_fields.dart';
-import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/widgets/auth_gradient_button.dart';
+import 'package:soptify_mvvm_riverpod/features/auth/viewmodel/auth_viewmodel.dart';
 
-class SingInPage extends StatefulWidget {
+import '../../../../core/service/navigation_service.dart';
+import '../../../home/view/pages/home_page.dart';
+
+class SingInPage extends ConsumerStatefulWidget {
   const SingInPage({super.key});
 
   @override
-  State<SingInPage> createState() => _SignUpPageState();
+  ConsumerState<SingInPage> createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SingInPage> {
+class _SignInPageState extends ConsumerState<SingInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -31,6 +29,41 @@ class _SignUpPageState extends State<SingInPage> {
 
   @override
   Widget build(BuildContext context) {
+   final isLoading = ref
+        .watch(authViewmodelProvider.select((val) => val?.isLoading == true));
+    final ScaffoldMessengerState scaffoldMessenger =
+        navigator.scaffoldMessengerKey.currentState!;
+        
+    ref.listen(authViewmodelProvider, (_, next) {
+      
+      next?.when(
+        data: (data) {
+          print("from signin page");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+              (_) => false,
+            );
+        },
+        error: (error, stacktrace) {
+          // postframe callback
+          // to avoid snackbar not showing
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scaffoldMessenger
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(content: Text(error.toString())));
+          });
+        },
+        loading: () {
+          /* ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(const SnackBar(content: Text("Loading..."))); */
+        },
+      );
+    });
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -41,7 +74,7 @@ class _SignUpPageState extends State<SingInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Sign Up',
+                'Sign In',
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 15),
@@ -53,17 +86,12 @@ class _SignUpPageState extends State<SingInPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20),
-              AuthGradientButton(buttonText: "Sign In", onTap: () async {
-                final res = await AuthRemoteRepository().login(
-                  email: emailController.text,
-                  password: passwordController.text,
-                );
-
-                final val = switch (res) {
-                  Left(value: final l) => l,
-                  Right(value: final r) => r
-                };
-                print(val);
+              AuthGradientButton(
+                isLoading: isLoading,
+                buttonText: "Sign In", onTap: () {
+                ref.read(authViewmodelProvider.notifier).loginUser(
+                    email: emailController.text,
+                    password: passwordController.text);
               }),
               const SizedBox(height: 20),
               RichText(

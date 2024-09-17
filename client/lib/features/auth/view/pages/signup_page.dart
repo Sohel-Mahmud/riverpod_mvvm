@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:soptify_mvvm_riverpod/core/service/navigation_service.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/app_pallete.dart';
 import 'package:soptify_mvvm_riverpod/core/widgets/custom_fields.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/pages/signin_page.dart';
@@ -20,11 +21,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     nameController.dispose();
@@ -34,6 +30,41 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    // watch changes on usermodel
+    final isLoading = ref
+        .watch(authViewmodelProvider.select((val) => val?.isLoading == true));
+
+    // listen can't return a widget
+    // so in loading state we cant show a progressindicator
+    // you can do this operation within authviewmodel
+    // but you have to pass context to viewmodel
+    // which is not recommended and you can't unit test your code
+    // UI related stuff stays in view not in viewmodel
+    final ScaffoldMessengerState scaffoldMessenger =
+        navigator.scaffoldMessengerKey.currentState!;
+
+    ref.listen(authViewmodelProvider, (_, next) {
+      next?.when(
+        data: (data) {
+          print("from signup page");
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return const SingInPage();
+          }));
+        },
+        error: (error, stacktrace) {
+          // postframe callback
+          // to avoid snackbar not showing
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scaffoldMessenger
+              ..hideCurrentSnackBar()
+              ..showSnackBar(SnackBar(content: Text(error.toString())));
+          });
+        },
+        loading: () {},
+      );
+    });
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -59,6 +90,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               ),
               const SizedBox(height: 20),
               AuthGradientButton(
+                  isLoading: isLoading,
                   buttonText: "Sign Up",
                   onTap: () async {
                     if (formKey.currentState!.validate()) {

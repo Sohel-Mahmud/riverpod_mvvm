@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:soptify_mvvm_riverpod/core/widget/loader.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 
 class AuthGradientButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onTap;
+  final bool isLoading;
   const AuthGradientButton({
     super.key,
     required this.buttonText,
+    this.isLoading = false,
     required this.onTap,
   });
 
@@ -26,13 +29,13 @@ class AuthGradientButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(7),
       ),
       child: ElevatedButton(
-        onPressed: onTap,
+        onPressed: isLoading ? null : onTap,
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(395, 55),
           backgroundColor: Pallete.transparentColor,
           shadowColor: Pallete.transparentColor,
         ),
-        child: Text(
+        child: isLoading ? const Loader() : Text(
           buttonText,
           style: const TextStyle(
             fontSize: 17,

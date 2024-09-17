@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:fpdart/fpdart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/app_pallete.dart';
 import 'package:soptify_mvvm_riverpod/core/widgets/custom_fields.dart';
-import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/pages/signin_page.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/widgets/auth_gradient_button.dart';
+import 'package:soptify_mvvm_riverpod/features/auth/viewmodel/auth_viewmodel.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -61,16 +61,12 @@ class _SignUpPageState extends State<SignUpPage> {
               AuthGradientButton(
                   buttonText: "Sign Up",
                   onTap: () async {
-                    final res = await AuthRemoteRepository().signup(
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text.trim());
-
-                    final val = switch (res) {
-                      Left(value: final l) => l,
-                      Right(value: final r) => r.toString(),
-                    };
-                    print(val);
+                    if (formKey.currentState!.validate()) {
+                      ref.read(authViewmodelProvider.notifier).signUpUser(
+                          name: nameController.text,
+                          email: emailController.text,
+                          password: passwordController.text);
+                    }
                   }),
               const SizedBox(height: 20),
               GestureDetector(

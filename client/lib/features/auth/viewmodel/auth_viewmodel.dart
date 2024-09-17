@@ -27,7 +27,9 @@ class AuthViewmodel extends _$AuthViewmodel {
     required String email,
     required String password,
   }) async {
-    // call the repository
+    // contains the current state of the object
+    // also `state = AsyncLoading` is okay
+    state = const AsyncValue.loading();
     final res = await _authRemoteRepository.signup(
         name: name,
         email: email,

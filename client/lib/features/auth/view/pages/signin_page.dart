@@ -29,23 +29,32 @@ class _SignInPageState extends ConsumerState<SingInPage> {
 
   @override
   Widget build(BuildContext context) {
-   final isLoading = ref
+
+    // use provider.select to select specific variable
+    // that you want to watch
+    // dont watch the full viewmodelProvider
+    // it will rebuild the whole widget
+    final isLoading = ref
         .watch(authViewmodelProvider.select((val) => val?.isLoading == true));
+
     final ScaffoldMessengerState scaffoldMessenger =
         navigator.scaffoldMessengerKey.currentState!;
-        
+
     ref.listen(authViewmodelProvider, (_, next) {
-      
       next?.when(
         data: (data) {
           print("from signin page");
+          scaffoldMessenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(const SnackBar(content: Text("Login Success")));
+
           Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-              (_) => false,
-            );
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+            (_) => false,
+          );
         },
         error: (error, stacktrace) {
           // postframe callback
@@ -87,12 +96,13 @@ class _SignInPageState extends ConsumerState<SingInPage> {
               ),
               const SizedBox(height: 20),
               AuthGradientButton(
-                isLoading: isLoading,
-                buttonText: "Sign In", onTap: () {
-                ref.read(authViewmodelProvider.notifier).loginUser(
-                    email: emailController.text,
-                    password: passwordController.text);
-              }),
+                  isLoading: isLoading,
+                  buttonText: "Sign In",
+                  onTap: () {
+                    ref.read(authViewmodelProvider.notifier).loginUser(
+                        email: emailController.text,
+                        password: passwordController.text);
+                  }),
               const SizedBox(height: 20),
               RichText(
                   text: TextSpan(

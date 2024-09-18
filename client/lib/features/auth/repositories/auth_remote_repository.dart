@@ -10,7 +10,7 @@ import '../model/user_model.dart';
 
 part 'auth_remote_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthRemoteRepository authRemoteRepository(AuthRemoteRepositoryRef ref) {
   return AuthRemoteRepository();
 }

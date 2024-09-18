@@ -4,6 +4,10 @@ import 'package:soptify_mvvm_riverpod/core/service/navigation_service.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/theme.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/view/pages/signup_page.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:soptify_mvvm_riverpod/features/home/view/pages/home_page.dart';
+import 'package:soptify_mvvm_riverpod/features/home/view/pages/upload_song_page.dart';
+
+import 'core/providers/current_user_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,22 +16,25 @@ void main() async {
   final container = ProviderContainer();
   // init shared prefs
   await container.read(authViewmodelProvider.notifier).initSharedPrefs();
+  await container.read(authViewmodelProvider.notifier).getData();
 
   runApp(UncontrolledProviderScope(
     container: container,
     child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.watch(currentUserNotifierProvider);
+    
     return MaterialApp(
       scaffoldMessengerKey: navigator.scaffoldMessengerKey,
       title: 'Flutter Demo',
       theme: AppTheme.darkThemeMode,
-      home: const SignUpPage(),
+      home: currentUser == null ? const SignUpPage() : const UploadSongPage(),
     );
   }
 }

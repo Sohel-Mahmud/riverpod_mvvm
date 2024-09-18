@@ -5,17 +5,19 @@ import 'package:soptify_mvvm_riverpod/features/auth/model/user_model.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_local_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
 
+import '../../../core/providers/current_user_notifier.dart';
+
 part 'auth_viewmodel.g.dart';
 
 /* 
 // can be use this way if code generation is not used
 class AuthViewmodel extends Notifier { */
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AuthViewmodel extends _$AuthViewmodel {
-
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
+  late CurrentUserNotifier _currentUserNotifier;
 
   // build is for creating initial value
   // or initializing any dependencies
@@ -23,6 +25,8 @@ class AuthViewmodel extends _$AuthViewmodel {
   AsyncValue<UserModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
+    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
+
     return null;
   }
 
@@ -30,7 +34,6 @@ class AuthViewmodel extends _$AuthViewmodel {
     await _authLocalRepository.init();
   }
 
-  
   Future<void> signUpUser({
     required String name,
     required String email,
@@ -44,12 +47,11 @@ class AuthViewmodel extends _$AuthViewmodel {
     await Future.delayed(const Duration(seconds: 1));
 
     final res = await _authRemoteRepository.signup(
-        name: name,
-        email: email,
-        password: password.trim());
+        name: name, email: email, password: password.trim());
 
     final val = switch (res) {
-      Left(value: final l) => state = AsyncValue.error(l.message, StackTrace.current),
+      Left(value: final l) => state =
+          AsyncValue.error(l.message, StackTrace.current),
       Right(value: final r) => state = AsyncValue.data(r),
     };
     print(val);
@@ -67,11 +69,11 @@ class AuthViewmodel extends _$AuthViewmodel {
     await Future.delayed(const Duration(seconds: 1));
 
     final res = await _authRemoteRepository.login(
-        email: email,
-        password: password.trim());
+        email: email, password: password.trim());
 
     final val = switch (res) {
-      Left(value: final l) => state = AsyncValue.error(l.message, StackTrace.current),
+      Left(value: final l) => state =
+          AsyncValue.error(l.message, StackTrace.current),
       Right(value: final r) => _loginSuccess(r),
     };
     print(val);
@@ -80,6 +82,7 @@ class AuthViewmodel extends _$AuthViewmodel {
   // method is saparated cz swith (res) not allows block of code
   AsyncValue<UserModel>? _loginSuccess(UserModel userModel) {
     _authLocalRepository.setToken(userModel.token);
+    _currentUserNotifier.addUser(userModel);
     return state = AsyncValue.data(userModel);
   }
 
@@ -104,7 +107,8 @@ class AuthViewmodel extends _$AuthViewmodel {
   }
 
   AsyncValue<UserModel> _getDataSuccess(UserModel user) {
-    //_currentUserNotifier.addUser(user);
+    _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }
+
 }

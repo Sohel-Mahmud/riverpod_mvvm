@@ -33,7 +33,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     // watch changes on usermodel
     final isLoading = ref
         .watch(authViewmodelProvider.select((val) => val?.isLoading == true));
-
     // listen can't return a widget
     // so in loading state we cant show a progressindicator
     // you can do this operation within authviewmodel

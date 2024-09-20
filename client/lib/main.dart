@@ -34,7 +34,7 @@ class MyApp extends ConsumerWidget {
       scaffoldMessengerKey: navigator.scaffoldMessengerKey,
       title: 'Flutter Demo',
       theme: AppTheme.darkThemeMode,
-      home: currentUser == null ? const SignUpPage() : const UploadSongPage(),
+      home: currentUser == null ? const SignUpPage() : const HomePage(),
     );
   }
 }

@@ -4,6 +4,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:soptify_mvvm_riverpod/core/providers/current_user_notifier.dart';
+import 'package:soptify_mvvm_riverpod/features/home/repositories/home_repository.dart';
+import 'package:soptify_mvvm_riverpod/features/home/viewmodel.dart/home_viewmodel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/utils.dart';
@@ -53,19 +56,32 @@ class _UploadSongPageState extends ConsumerState<UploadSongPage> {
 
   @override
   Widget build(BuildContext context) {
-    /* final isLoading = ref
-        .watch(homeViewModelProvider.select((val) => val?.isLoading == true)); */
+    final isLoading = ref.watch(homeViewModelProvider.select((value) => value?.isLoading == true));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upload Song'),
         actions: [
           IconButton(
-            onPressed: () async {},
+            onPressed: () async {
+              if (formKey.currentState!.validate() &&
+                  selectedAudio != null &&
+                  selectedImage != null) {
+                ref.read(homeViewModelProvider.notifier).uploadSong(
+                      selectedAudio: selectedAudio!,
+                      selectedThumbnail: selectedImage!,
+                      songName: songNameController.text,
+                      artist: artistController.text,
+                      selectedColor: selectedColor,
+                    );
+              } else {
+                showSnackBar(context, 'Missing fields!');
+              }
+            },
             icon: const Icon(Icons.check),
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: isLoading  ? const Loader() : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Form(

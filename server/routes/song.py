@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from database import get_db
 import cloudinary
 import cloudinary.uploader
+from cloudinary.utils import cloudinary_url
 from models.song import Song
-from pydantic_schemas.favorite_song import FavoriteSong
 from sqlalchemy.orm import joinedload
 from middleware.auth_middelware import auth_middleware
 
@@ -15,7 +15,7 @@ cloudinary.config(
     cloud_name = "devoq0lr7", 
     api_key = "741897131721567",
     api_secret = "5p9RGx3KA_2FIwVlj1iAEc80EPE",
-    secure=True
+    secure=False
 )
 
 @router.post('/upload', status_code=201)

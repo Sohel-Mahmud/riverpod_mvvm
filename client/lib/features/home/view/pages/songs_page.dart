@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:soptify_mvvm_riverpod/core/providers/current_song_notifier.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/widget/loader.dart';
@@ -117,9 +118,9 @@ class SongsPage extends ConsumerWidget {
 
                         return GestureDetector(
                           onTap: () {
-                            /* ref
+                            ref
                                 .read(currentSongNotifierProvider.notifier)
-                                .updateSong(song); */
+                                .updateSong(song);
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(left: 16.0),

@@ -4,6 +4,7 @@ import 'package:soptify_mvvm_riverpod/features/home/view/pages/library_page.dart
 import 'package:soptify_mvvm_riverpod/features/home/view/pages/songs_page.dart';
 
 import '../../../../core/theme/app_pallete.dart';
+import '../widget/music_slab.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -29,10 +30,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             index: selectedIndex,
             children: pages,
           ),
-          /* const Positioned(
+          const Positioned(
             bottom: 0,
             child: MusicSlab(),
-          ), */
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

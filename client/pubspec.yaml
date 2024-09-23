@@ -38,6 +38,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   fpdart: ^2.0.0-dev.3
   http: ^1.2.2
+  just_audio: ^0.9.40
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.3.2
 

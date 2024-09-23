@@ -38,6 +38,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "audio_session",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/audio_session-0.1.21",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "audio_waveforms",
       "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/audio_waveforms-1.0.5",
       "packageUri": "lib/",
@@ -344,6 +350,24 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "just_audio",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/just_audio-0.9.40",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "just_audio_platform_interface",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/just_audio_platform_interface-4.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "just_audio_web",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/just_audio_web-0.4.12",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/leak_tracker-10.0.5",
       "packageUri": "lib/",
@@ -426,6 +450,24 @@
       "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/path_parsing-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/path_provider-2.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "path_provider_android",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/path_provider_android-2.2.10",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "path_provider_foundation",
+      "rootUri": "file:///Users/sohelmahmud/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "path_provider_linux",
@@ -710,7 +752,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-09-20T09:30:00.350578Z",
+  "generated": "2024-09-20T12:32:13.422004Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///Users/sohelmahmud/Development/flutter",

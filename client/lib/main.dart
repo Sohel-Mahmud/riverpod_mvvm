@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:soptify_mvvm_riverpod/core/service/navigation_service.dart';
 import 'package:soptify_mvvm_riverpod/core/theme/theme.dart';
@@ -12,6 +13,11 @@ import 'core/providers/current_user_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   final dir = await getApplicationDocumentsDirectory();
   Hive.defaultDirectory = dir.path;
   // this container will allow us to access all the providers

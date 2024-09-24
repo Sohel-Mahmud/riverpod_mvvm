@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soptify_mvvm_riverpod/core/providers/current_song_notifier.dart';
 
 import '../../../../core/theme/app_pallete.dart';
+import '../../../../core/utils.dart';
 import '../../../../core/widget/loader.dart';
 import '../../viewmodel.dart/home_viewmodel.dart';
 
@@ -11,13 +12,13 @@ class SongsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /* final recentlyPlayedSongs =
+    final recentlyPlayedSongs =
         ref.watch(homeViewModelProvider.notifier).getRecentlyPlayedSongs();
     final currentSong = ref.watch(currentSongNotifierProvider);
- */
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
-      /* decoration: currentSong == null
+      decoration: currentSong == null
           ? null
           : BoxDecoration(
               gradient: LinearGradient(
@@ -29,11 +30,11 @@ class SongsPage extends ConsumerWidget {
                 ],
                 stops: const [0.0, 0.3],
               ),
-            ), */
+            ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /* Padding(
+          Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 36),
             child: SizedBox(
               height: 280,
@@ -95,7 +96,7 @@ class SongsPage extends ConsumerWidget {
                 },
               ),
             ),
-          ), */
+          ),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(

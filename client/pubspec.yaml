@@ -41,6 +41,10 @@ dependencies:
   just_audio: ^0.9.40
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.3.2
+  hive: ^4.0.0-dev.2
+  isar_flutter_libs: ^4.0.0-dev.13
+  path_provider: ^2.1.0
+  
 
 dev_dependencies:
   build_runner: ^2.4.12

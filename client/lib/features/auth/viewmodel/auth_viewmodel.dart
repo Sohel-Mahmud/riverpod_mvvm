@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:soptify_mvvm_riverpod/features/auth/model/user_model.dart';
+import 'package:soptify_mvvm_riverpod/core/models/user_model.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_local_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/auth/repositories/auth_remote_repository.dart';
 

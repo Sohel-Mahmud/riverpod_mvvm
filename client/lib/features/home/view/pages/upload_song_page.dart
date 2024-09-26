@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soptify_mvvm_riverpod/core/providers/current_user_notifier.dart';
 import 'package:soptify_mvvm_riverpod/features/home/repositories/home_repository.dart';
-import 'package:soptify_mvvm_riverpod/features/home/viewmodel.dart/home_viewmodel.dart';
+import 'package:soptify_mvvm_riverpod/features/home/viewmodel/home_viewmodel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/utils.dart';

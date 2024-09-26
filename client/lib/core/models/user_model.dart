@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:soptify_mvvm_riverpod/features/auth/model/fav_song_model.dart';
+
 // data class a class can hold data
 
 class UserModel {
@@ -8,12 +11,14 @@ class UserModel {
   final String name;
   final String email;
   final String token;
+  final List<FavSongModel> favorites;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.token,
+    required this.favorites,
   });
 
   // copy with
@@ -22,12 +27,14 @@ class UserModel {
     String? name,
     String? email,
     String? token,
+    List<FavSongModel>? favorites,
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       token: token ?? this.token,
+      favorites: favorites ?? this.favorites,
     );
   }
 
@@ -37,13 +44,14 @@ class UserModel {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       token: map['token'] ?? '',
+      favorites: List<FavSongModel>.from((map['favorites'] ?? []).map<FavSongModel>((x) => FavSongModel.fromMap(x as Map<String,dynamic>),),),
     );
   }
 
   // to string
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, token: $token)';
+    return 'UserModel(id: $id, name: $name, email: $email, token: $token, favorites: $favorites)';
   }
 
   Map<String, dynamic> toMap() {
@@ -52,6 +60,7 @@ class UserModel {
       'name': name,
       'email': email,
       'token': token,
+      'favorites': favorites.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -62,12 +71,14 @@ class UserModel {
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
   
     return 
       other.id == id &&
       other.name == name &&
       other.email == email &&
-      other.token == token;
+      other.token == token &&
+      listEquals(other.favorites, favorites);
   }
 
   @override
@@ -75,6 +86,7 @@ class UserModel {
     return id.hashCode ^
       name.hashCode ^
       email.hashCode ^
-      token.hashCode;
+      token.hashCode ^
+      favorites.hashCode;
   }
 }

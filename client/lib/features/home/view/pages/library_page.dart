@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:soptify_mvvm_riverpod/core/providers/current_song_notifier.dart';
 import 'package:soptify_mvvm_riverpod/features/home/view/pages/upload_song_page.dart';
+import 'package:soptify_mvvm_riverpod/features/home/viewmodel/home_viewmodel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/widget/loader.dart';
@@ -11,7 +13,7 @@ class LibraryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return /* ref.watch(getFavSongsProvider).when(
+    return ref.watch(getFavSongsProvider).when(
           data: (data) {
             return ListView.builder(
               itemCount: data.length + 1,
@@ -80,7 +82,6 @@ class LibraryPage extends ConsumerWidget {
             );
           },
           loading: () => const Loader(),
-        ); */
-        Placeholder();
+        );
   }
 }

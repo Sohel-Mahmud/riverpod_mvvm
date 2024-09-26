@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:soptify_mvvm_riverpod/core/providers/current_song_notifier.dart';
+import 'package:soptify_mvvm_riverpod/core/providers/current_user_notifier.dart';
+import 'package:soptify_mvvm_riverpod/features/home/viewmodel/home_viewmodel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/utils.dart';
@@ -14,9 +16,9 @@ class MusicPlayer extends ConsumerWidget {
     final currentSong = ref.watch(currentSongNotifierProvider);
     final songNotifier = ref.read(currentSongNotifierProvider.notifier);
 
-    /* final userFavorites = ref
+    final userFavorites = ref
         .watch(currentUserNotifierProvider.select((data) => data!.favorites));
- */
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       decoration: BoxDecoration(
@@ -104,19 +106,19 @@ class MusicPlayer extends ConsumerWidget {
                       const Expanded(child: SizedBox()),
                       IconButton(
                         onPressed: () async {
-                          /* await ref
+                          await ref
                               .read(homeViewModelProvider.notifier)
                               .favSong(
                                 songId: currentSong.id,
-                              ); */
+                              );
                         },
                         icon: Icon(
-                          /* userFavorites
+                          userFavorites
                                   .where((fav) => fav.song_id == currentSong.id)
                                   .toList()
                                   .isNotEmpty
                               ? CupertinoIcons.heart_fill
-                              :  */CupertinoIcons.heart,
+                              : CupertinoIcons.heart,
                           color: Pallete.whiteColor,
                         ),
                       ),

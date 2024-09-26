@@ -5,7 +5,7 @@ import 'package:soptify_mvvm_riverpod/core/providers/current_song_notifier.dart'
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/utils.dart';
 import '../../../../core/widget/loader.dart';
-import '../../viewmodel.dart/home_viewmodel.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class SongsPage extends ConsumerWidget {
   const SongsPage({super.key});

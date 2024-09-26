@@ -8,6 +8,8 @@ from cloudinary.utils import cloudinary_url
 from models.song import Song
 from sqlalchemy.orm import joinedload
 from middleware.auth_middelware import auth_middleware
+from pydantic_schemas.favorite_song import FavoriteSong
+from models.favorite import Favorite
 
 router = APIRouter()
 
@@ -50,7 +52,7 @@ def list_songs(db: Session=Depends(get_db),
     songs = db.query(Song).all()
     return songs
 
-""" @router.post('/favorite')
+@router.post('/favorite')
 def favorite_song(song: FavoriteSong, 
                   db: Session=Depends(get_db), 
                   auth_details=Depends(auth_middleware)):
@@ -77,4 +79,4 @@ def list_fav_songs(db: Session=Depends(get_db),
         joinedload(Favorite.song),
     ).all()
     
-    return fav_songs """
+    return fav_songs

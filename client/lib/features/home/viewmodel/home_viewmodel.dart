@@ -8,6 +8,7 @@ import 'package:soptify_mvvm_riverpod/core/utils.dart';
 import 'package:soptify_mvvm_riverpod/features/home/repositories/home_local_repository.dart';
 import 'package:soptify_mvvm_riverpod/features/home/repositories/home_repository.dart';
 
+import '../../auth/model/fav_song_model.dart';
 import '../models/song_model.dart';
 
 part 'home_viewmodel.g.dart';
@@ -27,6 +28,23 @@ Future<List<SongModel>> getAllSongs(GetAllSongsRef ref) async {
     Right(value: final r) => r,
   };
 }
+
+@riverpod
+Future<List<SongModel>> getFavSongs(GetFavSongsRef ref) async {
+  final token =
+      ref.watch(currentUserNotifierProvider.select((user) => user!.token));
+  // ref.watch is for if the token changes the function will be called again
+  // and its recommended to use watch instead of read in another provider
+  final res = await ref.watch(homeRepositoryProvider).getFavSongs(
+        token: token,
+      );
+
+  return switch (res) {
+    Left(value: final l) => throw l.message,
+    Right(value: final r) => r,
+  };
+}
+
 
 @riverpod
 class HomeViewModel extends _$HomeViewModel {
@@ -70,7 +88,7 @@ class HomeViewModel extends _$HomeViewModel {
     return _homeLocalRepository.loadSongs();
   }
 
-  /* Future<void> favSong({required String songId}) async {
+  Future<void> favSong({required String songId}) async {
     state = const AsyncValue.loading();
     final res = await _homeRepository.favSong(
       songId: songId,
@@ -80,12 +98,14 @@ class HomeViewModel extends _$HomeViewModel {
     final val = switch (res) {
       Left(value: final l) => state =
           AsyncValue.error(l.message, StackTrace.current),
-      Right(value: final r) => _favSongSuccess(r, songId),
+      Right(value: final isFav) => _favSongSuccess(isFav, songId),
     };
     print(val);
-  } */
+  }
 
-  /* AsyncValue _favSongSuccess(bool isFavorited, String songId) {
+  // invalidating the provider
+  // so that when fav is done fetches the new list and updates the UI
+  AsyncValue _favSongSuccess(bool isFavorited, String songId) {
     final userNotifier = ref.read(currentUserNotifierProvider.notifier);
     if (isFavorited) {
       userNotifier.addUser(
@@ -103,6 +123,9 @@ class HomeViewModel extends _$HomeViewModel {
     } else {
       userNotifier.addUser(
         ref.read(currentUserNotifierProvider)!.copyWith(
+          // here we are getting all the favorites 
+          // except the one we are removing
+          // and updating the user with the new list
               favorites: ref
                   .read(currentUserNotifierProvider)!
                   .favorites
@@ -113,7 +136,9 @@ class HomeViewModel extends _$HomeViewModel {
             ),
       );
     }
+    // this will invalidate the getFavSongs provider
+    // and refetch the futureprovider data
     ref.invalidate(getFavSongsProvider);
     return state = AsyncValue.data(isFavorited);
-  } */
+  }
 }

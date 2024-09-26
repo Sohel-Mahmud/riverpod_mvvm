@@ -24,8 +24,8 @@ void main() async {
   final container = ProviderContainer();
   // init shared prefs
   await container.read(authViewmodelProvider.notifier).initSharedPrefs();
-  await container.read(authViewmodelProvider.notifier).getData();
-
+  final user = await container.read(authViewmodelProvider.notifier).getData();
+  print(user);
   runApp(UncontrolledProviderScope(
     container: container,
     child: const MyApp()));

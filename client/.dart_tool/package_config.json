@@ -818,10 +818,10 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-09-24T13:32:32.564176Z",
+  "generated": "2024-11-08T13:09:26.759827Z",
   "generator": "pub",
-  "generatorVersion": "3.5.2",
+  "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/sohelmahmud/Development/flutter",
-  "flutterVersion": "3.24.2",
+  "flutterVersion": "3.24.4",
   "pubCache": "file:///Users/sohelmahmud/.pub-cache"
 }
